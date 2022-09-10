@@ -24,13 +24,16 @@ let persons = [
     }
 ]
 
+
 app.get('/', (request, response) => {
     response.send('<h1>Phonebook Backend</h1>')
 })
 
+
 app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
+
 
 app.get('/info', (request, response) => {
     response.send(
@@ -40,18 +43,17 @@ app.get('/info', (request, response) => {
 })
 
 
+app.get('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    const person = persons.find(p => p.id === id)
 
-// app.get('/api/notes/:id', (request, response) => {
-//     const id = Number(request.params.id)
-//     const note = notes.find(note => note.id === id)
+    if (person) {
+        response.json(person)
+    }else{
+        response.status(404).end()
+    }
+})
 
-//     if (note) {
-//         response.json(note)
-//     } else {
-//         response.status(404).end()
-//     }
-
-// })
 
 // app.delete('/api/notes/:id', (request, response) => {
 //     const id = Number(request.params.id)
