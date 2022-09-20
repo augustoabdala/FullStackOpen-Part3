@@ -1,6 +1,11 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+// In order to access the data easily, we need the help of the
+// express json-parser that is taken to use with this command.
+// See POST in the code.
+
 let persons = [
     {
         "id": 1,
@@ -58,12 +63,26 @@ app.get('/api/persons/:id', (request, response) => {
 app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     console.log('ID ' + id + ' requested for deletion')
-    
+
     persons = persons.filter(p => p.id !== id)
 
     console.log('Remaining persons: ' + persons.length)
 
     response.status(204).end()
+})
+
+
+app.post('/api/persons', (request, response) => {
+
+    const person = {
+        name: request.body.name,
+        number: request.body.number,
+        id: Math.floor(Math.random() * 1000000)
+    }
+
+    persons = persons.concat(person)
+
+    response.json(person)
 })
 
 
