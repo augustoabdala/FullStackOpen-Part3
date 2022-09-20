@@ -80,8 +80,31 @@ app.post('/api/persons', (request, response) => {
         id: Math.floor(Math.random() * 1000000)
     }
 
-    persons = persons.concat(person)
+    if (!request.body.name) {
+        return response.status(400).json({
+            error: 'name missing'
+        })
+    }
 
+    if (!request.body.number) {
+        return response.status(400).json({
+            error: 'number missing'
+        })
+    }
+
+    if (persons.map(p => p.name).includes(person.name)) {
+        return response.status(400).json({
+            error: 'name must be unique'
+        })
+    }
+
+    if (persons.map(p => p.number).includes(person.number)) {
+        return response.status(400).json({
+            error: 'number must be unique'
+        })
+    }
+
+    persons = persons.concat(person)
     response.json(person)
 })
 
