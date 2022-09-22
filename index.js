@@ -6,6 +6,16 @@ app.use(express.json())
 // express json-parser that is taken to use with this command.
 // See POST in the code.
 
+const morgan = require('morgan')
+
+morgan.token('body', (request) => JSON.stringify(request.body))
+
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+
+
+// app.use(morgan())
+
 let persons = [
     {
         "id": 1,
